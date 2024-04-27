@@ -11,19 +11,10 @@ class Target(pygame.sprite.Sprite):
         self.is_flying = True
         self.is_alive = True
         self.current_sprite = 0
-        self.flying_animation_sprites = []
+        self.flying_animation_sprites = [frame for frame in [pygame.image.load(f"assets/graphics/duck/duck_horizon_{i}.png") for i in [1, 2, 3, 2]] for r in range(10)]
         self.got_shot_sprite = pygame.image.load("assets/graphics/duck/got_shot.png")
-
-        self.flying_animation_sprites.append(pygame.image.load("assets/graphics/duck/duck_horizon_1.png"))
-        self.flying_animation_sprites.append(pygame.image.load("assets/graphics/duck/duck_horizon_1.png"))
-        self.flying_animation_sprites.append(pygame.image.load("assets/graphics/duck/duck_horizon_2.png"))
-        self.flying_animation_sprites.append(pygame.image.load("assets/graphics/duck/duck_horizon_2.png"))
-        self.flying_animation_sprites.append(pygame.image.load("assets/graphics/duck/duck_horizon_3.png"))
-        self.flying_animation_sprites.append(pygame.image.load("assets/graphics/duck/duck_horizon_3.png"))
-        self.flying_animation_sprites.append(pygame.image.load("assets/graphics/duck/duck_horizon_2.png"))
-        self.flying_animation_sprites.append(pygame.image.load("assets/graphics/duck/duck_horizon_2.png"))
         self.image = self.flying_animation_sprites[int(self.current_sprite)]
-        self.image = pygame.transform.scale_by(self.image, 6)
+        self.image = pygame.transform.scale_by(self.image, 4)
         
         
 
@@ -39,21 +30,21 @@ class Target(pygame.sprite.Sprite):
         self.rect = self.image.get_rect(center = self.pos)
         self.flapping_sound = pygame.mixer.Sound("assets/audio/duck_flapping_sound.ogg")
 
-    def update(self, speed):
+    def update(self):
         if self.is_flying == True:
-            self.current_sprite += speed
+            self.current_sprite += 1
 
             if self.current_sprite >= len(self.flying_animation_sprites):
                 self.current_sprite = 0
 
             self.image = self.flying_animation_sprites[int(self.current_sprite)]
 
-            if self.current_sprite == 3 * speed:
+            if self.current_sprite == 20 :
                 self.flapping_sound.play() 
 
             if self.direct == 2:
                 self.image = pygame.transform.flip(self.image, True, False)
-            self.image = pygame.transform.scale_by(self.image, 6)
+            self.image = pygame.transform.scale_by(self.image, 4)
             self.rect = self.image.get_rect()
 
             self.pos += self.direction.normalize() * self.flying_speed    
@@ -65,20 +56,15 @@ class Target(pygame.sprite.Sprite):
                 self.kill()
             
         else:
-            self.current_sprite += 2
-            self.image = pygame.transform.scale_by(self.got_shot_sprite, 6)
+            self.current_sprite += 2.5
+            self.image = pygame.transform.scale_by(self.got_shot_sprite, 4)
             self.rect = self.image.get_rect()
             
             self.pos += self.direction.normalize() * 8    
             self.rect.center = (round(self.pos.x), round(self.pos.y))
 
-            if self.current_sprite == 3 * 8:
-                self.kill()
-
-        
-
     def got_shot(self):
         self.is_alive = False
         self.is_flying = False
         self.current_sprite = 0
-        self.direction = Vector2(self.pos) - Vector2(self.pos.x, SCREEN_HEIGHT)
+        self.direction = Vector2(self.pos.x, SCREEN_HEIGHT) - Vector2(self.pos) 

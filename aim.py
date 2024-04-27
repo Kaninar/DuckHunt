@@ -5,12 +5,13 @@ class Aim(pygame.sprite.Sprite):
     def __init__(self):
         super(Aim, self).__init__()
         self.image = pygame.image.load("assets/graphics/gun/Aim.png")
+        self.image = pygame.transform.scale_by(self.image, 0.5)
         self.rect = self.image.get_rect()
         self.rect.center = (SCREEN_WIDTH//2, SCREEN_HEIGHT//2)
 
     def handle_keys(self):
         key = pygame.key.get_pressed()
-        dist = 10
+        dist = 5
         centerx, centery = self.rect.center
 
         if key[pygame.K_DOWN]: 

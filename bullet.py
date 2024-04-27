@@ -20,7 +20,7 @@ class Bullet(pygame.sprite.Sprite):
     def draw(self, screen):
         screen.blit(self.image, self.rect)
 
-    def update(self, speed):
+    def update(self):
         if self.is_ready:
             self.image = self.ready_sprite
         else:

@@ -22,7 +22,6 @@ class Game(Sprite):
         pygame.init()  
         pygame.mixer.init() 
         pygame.display.set_caption("DuckHunt")
-        pygame.display.set_icon(pygame.image.load("assets/UI/DuckHuntLogo.png"))
         self.SCREEN = pygame.display.set_mode([SCREEN_WIDTH, SCREEN_HEIGHT])
         self.scene = Scene.MAIN_MENU
         self.SCORE = 0
@@ -85,9 +84,10 @@ class Game(Sprite):
         # main menu apdate
         if self.scene == Scene.MAIN_MENU:
             self.SCREEN.blit(self.MAIN_MENU_BACKGROUND, (0,0))        
-            logo = Logo()
-            logo.draw(self.SCREEN)
-
+            
+            self.LOGO.update()
+            self.LOGO.draw(self.SCREEN)
+            
             for button in self.MAIN_MENU_BUTTONS:
                 button.changeColor(self.MOUSE_POS)
                 button.update(self.SCREEN)
